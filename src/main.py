@@ -77,6 +77,7 @@ parser.add_argument('-mt',
                         metavar='model_type',
                         type=str,
                         default='smokeynet',
+                        choices=['smokeynet', 'binary-classifier'],
                         help='Edge model type'
                     )
 
