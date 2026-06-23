@@ -102,7 +102,7 @@ class ExecuteBase:
         if self.MODEL_TYPE == 'binary-classifier':
             self.next_sample,self.next_image,self.next_timestamp = None,None,None
         elif self.MODEL_TYPE == 'smokeynet':
-            if isinstance(self.camera_device, RecordedMP4):
+            if type(self.camera_device) is RecordedMP4:
                 self.next_sample, self.next_image, self.next_timestamp = \
                     self._set_image_sample_from_stream(self.smokey_net_delay)
             else:
