@@ -103,6 +103,8 @@ class ExecuteBase:
             self.next_sample,self.next_image,self.next_timestamp = None,None,None
         elif self.MODEL_TYPE == 'smokeynet':
             if type(self.camera_device) is RecordedMP4:
+                self.current_sample, self.current_image, self.current_timestamp = \
+                    self._set_image_sample_from_stream(self.smokey_net_delay-1)
                 self.next_sample, self.next_image, self.next_timestamp = \
                     self._set_image_sample_from_stream(self.smokey_net_delay)
             else:
