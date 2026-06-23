@@ -5,6 +5,5 @@ requests
 onnx
 onnxruntime
 pywaggle[all]==0.55.1
-git+https://github.com/sagecontinuum/sage-cli.git
 --extra-index-url https://google-coral.github.io/py-repo/ 
 tflite_runtime
