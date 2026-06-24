@@ -80,10 +80,10 @@ Smoke Detector Models:
 - Binary classifier model: `--model-file-name model.tflite` and `--model-type binary-classifier`
 
 For setting the sage data topic (`--sage-data-topic env.smoke.`):
-- The name of the topic to push to [Sage Data Repository](https://docs.waggle-edge.ai/docs/about/architecture) and become publicly accessible to users through the [Data API](https://docs.waggle-edge.ai/docs/tutorials/accessing-data#data-api)
+- The name of the topic to push to [Sage Data Repository](https://sagecontinuum.org/docs/about/architecture) and become publicly accessible to users through the [Data API](https://sagecontinuum.org/docs/tutorials/accessing-data#data-api)
 
-Lastly, there is one environment variables that could be set for running the container in debug mode or when not running on a Sage Node [Sage Platform](https://docs.waggle-edge.ai/docs/about/overview):
-- PYWAGGLE_LOG_DIR: temporary directory to output the [pywaggle](https://github.com/waggle-sensor/pywaggle) log files for debugging purposes. This is the same format used by the [Data API](https://docs.waggle-edge.ai/docs/tutorials/accessing-data#data-api).
+Lastly, there is one environment variables that could be set for running the container in debug mode or when not running on a Sage Node [Sage Platform](https://sagecontinuum.org/docs/about/overview):
+- PYWAGGLE_LOG_DIR: temporary directory to output the [pywaggle](https://github.com/waggle-sensor/pywaggle) log files for debugging purposes. This is the same format used by the [Data API](https://sagecontinuum.org/docs/tutorials/accessing-data#data-api).
 
 Run model:
 ```
