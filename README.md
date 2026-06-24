@@ -5,15 +5,10 @@ The rest of the README provides instructions to run the model on different envir
 
 To re-train the edge model with your own data, please see [trainning README](training/README.md).
 
-The [Dockerfile](Dockerfile) already downloads the most recent versions of both the binary classifier model and Smokeynet (during the build stage) that can be ran on an edge device or locally and for user-convience to test the models.
+The [Dockerfile](Dockerfile) already downloads the most recent versions of both the binary classifier model and Smokeynet (during the build stage) that can be ran on an edge device or locally and for user-convenience to test the models.
 ## Instructions
 
 ## Step 1: Build Docker image for plugin
-
-Build image:
-```
-docker build -t sagecontinuum/sage-smoke-detection:0.1.0 .
-```
 
 Build image with buildx:
 ```
