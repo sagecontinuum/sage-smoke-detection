@@ -92,41 +92,29 @@ For the case that it is not needed, simply run the container without the volume 
 docker run sagecontinuum/sage-smoke-detection:0.1.0
 ```
 
-Output when plugin is configured to run HPWREN camera API as a camera input:
+Example output of the plugin when the pre-recorded MP4 is used (default):
 ```
-Starting smoke detection inferencing
-Get image from HPWREN Camera
-Image url: http://hpwren.ucsd.edu/cameras/L/tje-1-mobo-c.jpg
-Description:  Unknown direction Color Original
-Perform an inference based on trainned model
-Publish
-.
-.
-.
-Get image from HPWREN Camera
-Image url: http://hpwren.ucsd.edu/cameras/L/tje-1-mobo-c.jpg
-Description:  Unknown direction Color Original
-Perform an inference based on trainned model
-Publish
+[2026/06/24 18:55:05 main.py:125]INFO: Starting smoke detection inferencing
+[2026/06/24 18:55:05 main.py:126]INFO: Get image from 20190610-Pauma-bh-w-mobo-c.mp4
+[2026/06/24 18:55:05 main.py:127]INFO: Image url: 20190610-Pauma-bh-w-mobo-c.mp4
+[2026/06/24 18:55:05 main.py:128]INFO: Description: Pre-recorded video
+[2026/06/24 18:55:05 main.py:129]INFO: Using smokeynet
+[2026/06/24 18:55:05 main.py:131]INFO: Perform an inference based on trainned model
+[2026/06/24 18:55:08 main.py:135]INFO: Publish
 ```
 
-Example output of the plugin when the pre-recorded MP4 is used:
+Output when plugin is configured to run HPWREN camera API as a camera input:
 ```
-Starting smoke detection inferencing
-Get image from 20190610-Pauma-bh-w-mobo-c.mp4
-Image url: 20190610-Pauma-bh-w-mobo-c.mp4
-Description: Pre-recorded video
-Perform an inference based on trainned model
-Publish
-.
-.
-.
-Get image from 20190610-Pauma-bh-w-mobo-c.mp4
-Image url: 20190610-Pauma-bh-w-mobo-c.mp4
-Description: Pre-recorded video
-Perform an inference based on trainned model
-Publish
+docker run sagecontinuum/sage-smoke-detection:0.1.0 --camera-type hpwren                                                             
+[2026/06/24 18:49:06 main.py:125]INFO: Starting smoke detection inferencing
+[2026/06/24 18:49:06 main.py:126]INFO: Get image from HPWREN Camera
+[2026/06/24 18:49:06 main.py:127]INFO: Image url: https://cdn.hpwren.ucsd.edu/RTS/bh-n-mobo-c-640.jpg
+[2026/06/24 18:49:06 main.py:128]INFO: Description: Boucher Hill, on Palomar Mountain North Color Original
+[2026/06/24 18:49:06 main.py:129]INFO: Using smokeynet
+[2026/06/24 18:49:06 main.py:131]INFO: Perform an inference based on trainned model
+[2026/06/24 18:50:09 main.py:135]INFO: Publish
 ```
+
 
 Example output of the plugin when the bottom camera on the Wild Sage Node is used:
 ```
