@@ -10,6 +10,8 @@ on:
       - 'src/**'
       - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
+      - 'Dockerfile.notebook'
+      - 'notebooks/**'
   pull_request:
     branches:
       - master
@@ -17,6 +19,8 @@ on:
       - 'src/**'
       - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
+      - 'Dockerfile.notebook'
+      - 'notebooks/**'
 
 jobs:
   build-push-smoke-detection:
@@ -48,17 +52,16 @@ jobs:
       - name: Log in to NRP GitLab Container Registry
         run: echo "${{ secrets.NRP_GITLAB_DEPLOY_TOKEN }}" | docker login ${{ secrets.NRP_GITLAB_REGISTRY_URL }} -u ${{ secrets.NRP_GITLAB_DEPLOY_TOKEN_USERNAME }} --password-stdin
 
-      - name: Build & Push Multi-Arch Smoke Detection Image
+      - name: Build & Push Multi-Arch Smoke Detection Notebooks
         env:
           REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
         run: |
-          TAGS=(-t "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
+          SETS=(--set "notebooks.tags=$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            TAGS+=(-t "$REGISTRY_URL$IMAGE_PATH:latest")
+            SETS+=(--set "notebooks.tags=$REGISTRY_URL$IMAGE_PATH:latest")
           fi
-          docker buildx build \
+          docker buildx bake \
             --platform linux/amd64,linux/arm64 \
-            --provenance=false \
-            "${TAGS[@]}" \
+            "${SETS[@]}" \
             --push \
-            .
+            notebooks
