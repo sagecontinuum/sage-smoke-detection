@@ -3,7 +3,7 @@ name: Build/Push Sage Smoke Detection plugin
 on:
   push:
     branches:
-      - main
+      - master
     tags:
       - 'v*'
     paths:
@@ -12,7 +12,7 @@ on:
       - 'Dockerfile'
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'src/**'
       - '.github/workflows/docker-publish.yml'
@@ -48,20 +48,16 @@ jobs:
       - name: Log in to NRP GitLab Container Registry
         run: echo "${{ secrets.NRP_GITLAB_DEPLOY_TOKEN }}" | docker login ${{ secrets.NRP_GITLAB_REGISTRY_URL }} -u ${{ secrets.NRP_GITLAB_DEPLOY_TOKEN_USERNAME }} --password-stdin
 
-      - name: Build & Tag Smoke Detection Image
+      - name: Build & Push Multi-Arch Smoke Detection Image
         env:
           REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
         run: |
-          docker build -t "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG" .
+          TAGS=(-t "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            docker tag "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG" "$REGISTRY_URL$IMAGE_PATH:latest"
+            TAGS+=(-t "$REGISTRY_URL$IMAGE_PATH:latest")
           fi
-
-      - name: Push Smoke Detection Image to NRP Gitlab Image Registry
-        env:
-          REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
-        run: |
-          docker push "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG"
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            docker push "$REGISTRY_URL$IMAGE_PATH:latest"
-          fi
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            "${TAGS[@]}" \
+            --push \
+            .
