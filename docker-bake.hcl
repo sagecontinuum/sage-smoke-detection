@@ -5,8 +5,7 @@ target "plugin-base" {
 
 target "notebook" {
   dockerfile = "Dockerfile.notebook"
-  contexts = {
-    plugin-base = "target:plugin-base"
-  }
-  tags = ["notebook:latest"]
+  contexts   = { plugin-base = "target:plugin-base" }
+  platforms  = ["linux/amd64", "linux/arm64"]
+  tags       = ["notebook:latest"]
 }

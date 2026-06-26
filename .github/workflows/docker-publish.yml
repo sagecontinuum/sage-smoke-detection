@@ -36,9 +36,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
-      - name: Build
-        uses: docker/bake-action@v7
-
       - name: Set Image Tag
         run: |
           if [[ "$GITHUB_REF" == refs/heads/* ]]; then
@@ -74,12 +71,11 @@ jobs:
         env:
           REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
         run: |
-          SETS=(--set "notebooks.tags=$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            SETS+=(--set "notebooks.tags=$REGISTRY_URL$IMAGE_PATH:latest")
+          SETS=(--set "notebook.tags=$REGISTRY_URL$IMAGE_PATH-notebook:$IMAGE_TAG")
+          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
+            SETS+=(--set "notebook.tags+=$REGISTRY_URL$IMAGE_PATH-notebook:latest")
           fi
           docker buildx bake \
-            --platform linux/amd64,linux/arm64 \
             --provenance=false \
             "${SETS[@]}" \
             --push \
