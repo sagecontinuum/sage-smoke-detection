@@ -1,6 +1,6 @@
 import abc
 import hpwren
-from inference import BinaryFire,SmokeyNet
+from inference import SmokeyNet
 from pathlib import Path
 from waggle.data.vision import Camera
 from time import sleep
