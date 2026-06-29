@@ -11,4 +11,5 @@ RUN pip install jupyterhub==5.5.0
 
 COPY notebooks/ .
 
-ENTRYPOINT ["jupyter", "notebook", "--ip", "0.0.0.0", "--allow-root"]
+ENTRYPOINT []
+CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--allow-root"]
