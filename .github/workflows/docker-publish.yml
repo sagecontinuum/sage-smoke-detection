@@ -53,7 +53,7 @@ jobs:
           REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
         run: |
           TAGS=(-t "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             TAGS+=(-t "$REGISTRY_URL$IMAGE_PATH:latest")
           fi
           docker buildx build \
