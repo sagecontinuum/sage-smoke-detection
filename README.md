@@ -8,7 +8,7 @@ To re-train the edge model with your own data, please see [trainning README](tra
 The [Dockerfile](Dockerfile) already downloads the most recent versions of both the binary classifier model and Smokeynet (during the build stage) that can be ran on an edge device or locally and for user-convenience to test the models.
 ## Instructions
 
-## Step 1: Build Docker image for plugin
+### Step 1: Build Docker image for plugin
 
 Build image with buildx:
 ```
@@ -20,7 +20,7 @@ Build image without buildx:
 docker build -t sagecontinuum/sage-smoke-detection:0.1.0 .
 ```
 
-## Step 2: Run Docker container locally or on an edge device
+### Step 2: Run Docker container locally or on an edge device
 There are three possible camera inputs and two smoke detector models to configure the plugin and to run the Docker container through command line arguments.
 
 To get help with how to set the command line arguments:
@@ -120,3 +120,8 @@ Example output of the plugin when the bottom camera on the Wild Sage Node is use
 ```
 Coming Soon
 ```
+
+## Running on the National Data Platform (NDP)
+The [smoke detection plugin notebook](notebooks/smoke-detection-plugin-demo.ipynb) can be run locally, on the plugin docker image, or on NDP.
+
+For the case for running on NDP, there is a public workspace already created for users to easily add to their user profile and instructions run on NDP Jupyterhub. See link to the [public workspace](https://nationaldataplatform.org/workspaces/1356e9a9-a4d7-408b-ae3b-4531e0084613?from=explore).
