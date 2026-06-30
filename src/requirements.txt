@@ -5,3 +5,4 @@ onnx
 onnxruntime
 pywaggle[all]==0.55.1
 numpy<2.0
+matplotlib==3.7.5
