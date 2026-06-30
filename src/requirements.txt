@@ -1,7 +1,7 @@
 pillow
 pika
-tflite
 requests
 onnx
 onnxruntime
 pywaggle[all]==0.55.1
+numpy<2.0

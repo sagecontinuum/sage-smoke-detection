@@ -66,17 +66,3 @@ jobs:
             "${TAGS[@]}" \
             --push \
             .
-
-      - name: Build & Push Multi-Arch Smoke Detection Notebook Image
-        env:
-          REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
-        run: |
-          SETS=(--set "notebook.tags=$REGISTRY_URL$IMAGE_PATH-notebook:$IMAGE_TAG")
-          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-            SETS+=(--set "notebook.tags+=$REGISTRY_URL$IMAGE_PATH-notebook:latest")
-          fi
-          docker buildx bake \
-            --provenance=false \
-            "${SETS[@]}" \
-            --push \
-            notebook
