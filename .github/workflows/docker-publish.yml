@@ -10,8 +10,6 @@ on:
       - 'src/**'
       - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
-      - 'Dockerfile.notebook'
-      - 'notebooks/**'
   pull_request:
     branches:
       - master
@@ -19,8 +17,6 @@ on:
       - 'src/**'
       - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
-      - 'Dockerfile.notebook'
-      - 'notebooks/**'
 
 jobs:
   build-push-smoke-detection:
