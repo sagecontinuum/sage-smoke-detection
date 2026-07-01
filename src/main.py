@@ -12,7 +12,7 @@ parser.add_argument('-st',
                         metavar='smoke_threshold',
                         type=float,
                         default=0.9,
-                        help='Threshold for model inference (only used for binary classifier)'
+                        help='Threshold for model inference'
                     )
 
 parser.add_argument('-c',
@@ -77,6 +77,7 @@ parser.add_argument('-mt',
                         metavar='model_type',
                         type=str,
                         default='smokeynet',
+                        choices=['smokeynet'],
                         help='Edge model type'
                     )
 

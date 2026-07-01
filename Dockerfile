@@ -12,7 +12,6 @@ ENV LC_ALL="C.UTF-8" \
 
 WORKDIR /src
 
-RUN curl https://s3-west.nrp-nautilus.io/binary-classifier/model.tflite -o /src/model.tflite
 RUN curl https://s3-west.nrp-nautilus.io/smokeynet/model.onnx -o /src/model.onnx
 
 COPY src/requirements.txt requirements.txt

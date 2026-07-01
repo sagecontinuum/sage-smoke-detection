@@ -5,15 +5,10 @@ The rest of the README provides instructions to run the model on different envir
 
 To re-train the edge model with your own data, please see [trainning README](training/README.md).
 
-The [Dockerfile](Dockerfile) already downloads the most recent versions of both the binary classifier model and Smokeynet (during the build stage) that can be ran on an edge device or locally and for user-convience to test the models.
+The [Dockerfile](Dockerfile) already downloads the most recent versions of both the binary classifier model and Smokeynet (during the build stage) that can be ran on an edge device or locally and for user-convenience to test the models.
 ## Instructions
 
-## Step 1: Build Docker image for plugin
-
-Build image:
-```
-docker build -t sagecontinuum/sage-smoke-detection:0.1.0 .
-```
+### Step 1: Build Docker image for plugin
 
 Build image with buildx:
 ```
@@ -25,7 +20,7 @@ Build image without buildx:
 docker build -t sagecontinuum/sage-smoke-detection:0.1.0 .
 ```
 
-## Step 2: Run Docker container locally or on an edge device
+### Step 2: Run Docker container locally or on an edge device
 There are three possible camera inputs and two smoke detector models to configure the plugin and to run the Docker container through command line arguments.
 
 To get help with how to set the command line arguments:
@@ -80,10 +75,10 @@ Smoke Detector Models:
 - Binary classifier model: `--model-file-name model.tflite` and `--model-type binary-classifier`
 
 For setting the sage data topic (`--sage-data-topic env.smoke.`):
-- The name of the topic to push to [Sage Data Repository](https://docs.waggle-edge.ai/docs/about/architecture) and become publicly accessible to users through the [Data API](https://docs.waggle-edge.ai/docs/tutorials/accessing-data#data-api)
+- The name of the topic to push to [Sage Data Repository](https://sagecontinuum.org/docs/about/architecture) and become publicly accessible to users through the [Data API](https://sagecontinuum.org/docs/tutorials/accessing-data#data-api)
 
-Lastly, there is one environment variables that could be set for running the container in debug mode or when not running on a Sage Node [Sage Platform](https://docs.waggle-edge.ai/docs/about/overview):
-- PYWAGGLE_LOG_DIR: temporary directory to output the [pywaggle](https://github.com/waggle-sensor/pywaggle) log files for debugging purposes. This is the same format used by the [Data API](https://docs.waggle-edge.ai/docs/tutorials/accessing-data#data-api).
+Lastly, there is one environment variables that could be set for running the container in debug mode or when not running on a Sage Node [Sage Platform](https://sagecontinuum.org/docs/about/overview):
+- PYWAGGLE_LOG_DIR: temporary directory to output the [pywaggle](https://github.com/waggle-sensor/pywaggle) log files for debugging purposes. This is the same format used by the [Data API](https://sagecontinuum.org/docs/tutorials/accessing-data#data-api).
 
 Run model:
 ```
@@ -97,43 +92,36 @@ For the case that it is not needed, simply run the container without the volume 
 docker run sagecontinuum/sage-smoke-detection:0.1.0
 ```
 
-Output when plugin is configured to run HPWREN camera API as a camera input:
+Example output of the plugin when the pre-recorded MP4 is used (default):
 ```
-Starting smoke detection inferencing
-Get image from HPWREN Camera
-Image url: http://hpwren.ucsd.edu/cameras/L/tje-1-mobo-c.jpg
-Description:  Unknown direction Color Original
-Perform an inference based on trainned model
-Publish
-.
-.
-.
-Get image from HPWREN Camera
-Image url: http://hpwren.ucsd.edu/cameras/L/tje-1-mobo-c.jpg
-Description:  Unknown direction Color Original
-Perform an inference based on trainned model
-Publish
+[2026/06/24 18:55:05 main.py:125]INFO: Starting smoke detection inferencing
+[2026/06/24 18:55:05 main.py:126]INFO: Get image from 20190610-Pauma-bh-w-mobo-c.mp4
+[2026/06/24 18:55:05 main.py:127]INFO: Image url: 20190610-Pauma-bh-w-mobo-c.mp4
+[2026/06/24 18:55:05 main.py:128]INFO: Description: Pre-recorded video
+[2026/06/24 18:55:05 main.py:129]INFO: Using smokeynet
+[2026/06/24 18:55:05 main.py:131]INFO: Perform an inference based on trainned model
+[2026/06/24 18:55:08 main.py:135]INFO: Publish
 ```
 
-Example output of the plugin when the pre-recorded MP4 is used:
+Output when plugin is configured to run HPWREN camera API as a camera input:
 ```
-Starting smoke detection inferencing
-Get image from 20190610-Pauma-bh-w-mobo-c.mp4
-Image url: 20190610-Pauma-bh-w-mobo-c.mp4
-Description: Pre-recorded video
-Perform an inference based on trainned model
-Publish
-.
-.
-.
-Get image from 20190610-Pauma-bh-w-mobo-c.mp4
-Image url: 20190610-Pauma-bh-w-mobo-c.mp4
-Description: Pre-recorded video
-Perform an inference based on trainned model
-Publish
+docker run sagecontinuum/sage-smoke-detection:0.1.0 --camera-type hpwren                                                             
+[2026/06/24 18:49:06 main.py:125]INFO: Starting smoke detection inferencing
+[2026/06/24 18:49:06 main.py:126]INFO: Get image from HPWREN Camera
+[2026/06/24 18:49:06 main.py:127]INFO: Image url: https://cdn.hpwren.ucsd.edu/RTS/bh-n-mobo-c-640.jpg
+[2026/06/24 18:49:06 main.py:128]INFO: Description: Boucher Hill, on Palomar Mountain North Color Original
+[2026/06/24 18:49:06 main.py:129]INFO: Using smokeynet
+[2026/06/24 18:49:06 main.py:131]INFO: Perform an inference based on trainned model
+[2026/06/24 18:50:09 main.py:135]INFO: Publish
 ```
+
 
 Example output of the plugin when the bottom camera on the Wild Sage Node is used:
 ```
 Coming Soon
 ```
+
+## Running on the National Data Platform (NDP)
+The [smoke detection plugin notebook](notebooks/smoke-detection-plugin-demo.ipynb) can be run locally, on the plugin docker image, or on NDP.
+
+For the case for running on NDP, there is a public workspace already created for users to easily add to their user profile and instructions run on NDP Jupyterhub. See link to the [public workspace](https://nationaldataplatform.org/workspaces/1356e9a9-a4d7-408b-ae3b-4531e0084613?from=explore).

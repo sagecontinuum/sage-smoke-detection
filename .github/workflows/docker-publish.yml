@@ -1,50 +1,64 @@
-name: "Build and Push Docker Images"
+name: Build/Push Sage Smoke Detection plugin
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+    paths:
+      - 'src/**'
+      - '.github/workflows/docker-publish.yml'
+      - 'Dockerfile'
   pull_request:
-      branches: ["master"]
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - '.github/workflows/docker-publish.yml'
+      - 'Dockerfile'
 
 jobs:
-  push_to_registry:
+  build-push-smoke-detection:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_PATH: /ndp/sage/sage-smoke-detection
     steps:
-      - name: Get release version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
 
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+ 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
 
-      - name: Set up QEMU for multi-arch builds
-        uses: docker/setup-qemu-action@v1
+      - name: Set Image Tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/heads/* ]]; then
+            IMAGE_TAG="${GITHUB_REF#refs/heads/}"
+          elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            IMAGE_TAG="${GITHUB_REF#refs/tags/}"
+          elif [[ "$GITHUB_REF" == refs/pull/* ]]; then
+            PR_NUMBER=$(echo "$GITHUB_REF" | cut -d'/' -f3)
+            IMAGE_TAG="pr-${PR_NUMBER}"
+          fi
+          IMAGE_TAG=$(echo "$IMAGE_TAG" | tr '/' '-')
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Set up Docker buildx for multi-arch builds
-        uses: docker/setup-buildx-action@v1
+      - name: Log in to NRP GitLab Container Registry
+        run: echo "${{ secrets.NRP_GITLAB_DEPLOY_TOKEN }}" | docker login ${{ secrets.NRP_GITLAB_REGISTRY_URL }} -u ${{ secrets.NRP_GITLAB_DEPLOY_TOKEN_USERNAME }} --password-stdin
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: iperezx/sage-smoke-detection
-          tags: |
-            type=ref,event=pr
-            type=semver,pattern={{major}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{version}}
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          build-args: VERSION=${{ env.RELEASE_VERSION }}
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build & Push Multi-Arch Smoke Detection Plugin Image
+        env:
+          REGISTRY_URL: ${{ secrets.NRP_GITLAB_REGISTRY_URL }}
+        run: |
+          TAGS=(-t "$REGISTRY_URL$IMAGE_PATH:$IMAGE_TAG")
+          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
+            TAGS+=(-t "$REGISTRY_URL$IMAGE_PATH:latest")
+          fi
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --provenance=false \
+            "${TAGS[@]}" \
+            --push \
+            .
