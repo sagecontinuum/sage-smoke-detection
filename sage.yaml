@@ -1,6 +1,6 @@
 name: "wildfire-smoke-detection"
 description: "Wildfire Smoke Detection"
-version : "0.7.3"
+version : "0.8.0"
 namespace: "iperezx"
 authors: "Ismael Perez <i3perez@sdsc.edu>"
 license: "MIT license"
